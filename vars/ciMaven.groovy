@@ -50,8 +50,11 @@ def call() {
                 steps {
                     script {
                         writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
-
                         sh "ls -l"
+                        docker.withRegistry("${docker-hub-url}", "${dockerhub}") {
+                            def dockerImage = docker.build("${POM.artifactId}:${POM.version}")
+                            dockerImage.push()
+                        }
                     }
                 }
             }
