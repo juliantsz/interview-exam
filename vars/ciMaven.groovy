@@ -2,7 +2,11 @@ def call() {
     pipeline {
         stages {
             stage('Init'){
-                println("Hello world")
+                steps {
+                    script {
+                        println("Hello world")
+                    }
+                }
             }
         }
     }
