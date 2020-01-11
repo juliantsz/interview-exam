@@ -56,7 +56,7 @@ def call() {
                             def dockerImage = docker.build("crafterox4/${POM.artifactId}:${POM.version}")
                             dockerImage.push()
                         }*/
-                        sh "echo $(which docker)"
+                        sh "docker ps"
                     }
                 }
             }
