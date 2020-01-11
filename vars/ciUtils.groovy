@@ -10,6 +10,7 @@ def gitCheckout(String branch, String credentials, String url){
 }
 
 def buildImage(String credentials, String server) {
+    writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
     def remote = [:]
     remote.name = "${server}"
     remote.host = "${server}"
@@ -17,6 +18,7 @@ def buildImage(String credentials, String server) {
     withCredentials([usernamePassword(credentialsId: "${credentials}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
         remote.user = 'USERNAME'
         remote.password = 'PASSWORD'
-        sshCommand remote: remote, command: "cd /home/julian/Documents/Developer ; ls -l"
+        sshPut remote: remote, from: "${WORKSPACE}/Dockerfile", into: '/home/ec2-user/'
+        sshCommand remote: remote, command: "cd /home/ec2-user/; ls -l"
     }
 }

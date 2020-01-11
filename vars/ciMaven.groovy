@@ -9,7 +9,6 @@ def call() {
         }
         tools {
             maven 'maven-3.6.3'
-            docker 'docker'
         }
         options {
             timestamps() 
@@ -50,13 +49,10 @@ def call() {
             stage('Build Docker Image') {
                 steps {
                     script {
-                        writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
-                        sh "ls -l"
-                        /*docker.withRegistry('https://hub.docker.com/', 'dockerhub') {
-                            def dockerImage = docker.build("crafterox4/${POM.artifactId}:${POM.version}")
-                            dockerImage.push()
-                        }*/
-                        sh "docker ps"
+                        ciUtils.buildImage(
+                            "ec2-user",//credentials
+                            "ec2-ip"//server
+                        )
                     }
                 }
             }
