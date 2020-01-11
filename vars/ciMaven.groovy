@@ -33,8 +33,22 @@ def call() {
                     script {
                         withMaven(
                             mavenSettingsConfig: 'maven-settings') {
-                            sh "mvn clean verify sonar:sonar"
+                            sh "mvn package"
                         }
+                    }
+                }
+            }
+            stage('Maven test-compile'){
+                steps {
+                    script {
+                        sh "mvn test-compile"
+                    }
+                }
+            }
+            stage('Maven Scan') {
+                steps {
+                    script {
+                        sh "mvn sonar:sonar"
                     }
                 }
             }
