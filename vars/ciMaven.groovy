@@ -46,6 +46,13 @@ def call() {
                     }
                 }
             }
+            /*stage('Maven Scan') {
+                steps {
+                    script {
+                        sh "mvn sonar:sonar"
+                    }
+                }
+            }*/
         }
         post {
             cleanup{
