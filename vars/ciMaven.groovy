@@ -49,8 +49,8 @@ def call() {
             stage('Build Docker Image') {
                 steps {
                     script {
-                        def dockerfile = libraryResource 'resources/Dockerfile'
-                        writeFile file: 'Dockerfile', text: dockerfile
+                        writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
+
                         sh "ls -l"
                     }
                 }
