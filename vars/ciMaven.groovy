@@ -49,7 +49,7 @@ def call() {
             stage('Build Docker Image') {
                 steps {
                     script {
-                        println("EC2 IP ADDRESS ${env.ec2-ip}")
+                        println("EC2 IP ADDRESS ${env.ec2ip}")
                         /*ciUtils.buildImage(
                             "ec2-user",//credentials
                             "${env.ec2-ip}"//server
