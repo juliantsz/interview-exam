@@ -12,8 +12,8 @@ def gitCheckout(String branch, String credentials, String url){
 def buildImage(String credentials, String server) {
     writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
     def remote = [:]
-    remote.name = "3.82.56.14"
-    remote.host = "3.82.56.14"
+    remote.name = "${server}"
+    remote.host = "${server}"
     remote.allowAnyHosts = true
     withCredentials([usernamePassword(credentialsId: "${credentials}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
         remote.user = 'USERNAME'
