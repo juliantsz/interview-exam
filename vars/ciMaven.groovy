@@ -49,7 +49,7 @@ def call() {
             stage('Build Docker Image') {
                 steps {
                     script {
-                        def dockerfile = libraryResource 'resoures/Dockerfile'
+                        def dockerfile = libraryResource 'resources/Dockerfile'
                         writeFile file: 'Dockerfile', text: dockerfile
                         sh "ls -l"
                     }
