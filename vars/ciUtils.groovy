@@ -11,7 +11,7 @@ def gitCheckout(String branch, String credentials, String url){
 
 def buildImage(String credentials, String server) {
     def remote = [:]
-    remote.name = "${server}"
+    remote.name = "localhost"
     remote.host = "${server}"
     remote.allowAnyHosts = true
     withCredentials([usernamePassword(credentialsId: "${credentials}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
