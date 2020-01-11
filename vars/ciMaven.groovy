@@ -17,6 +17,7 @@ def call() {
             stage('Clone Repo'){
                 steps {
                     script {
+                        sh 'printenv | sort'
                         ciUtils.gitCheckout(
                             "master",//branch
                             "github",//credentials
@@ -31,6 +32,9 @@ def call() {
             cleanup{
                 deleteDir()
                 cleanWs()
+                dir("${WORKSPACE}@tmp"){
+                    deleteDir()
+                }
             }
         }
     }
