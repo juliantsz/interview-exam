@@ -23,8 +23,6 @@ def call() {
                             "github",//credentials
                             "https://github.com/daticahealth/java-tomcat-maven-example.git"//url
                         )
-                        
-                        sh "ls -l target/"
                         POM = readMavenPom file: 'pom.xml'
                     }
                 }
@@ -44,6 +42,7 @@ def call() {
                     script {
                         sh "mvn test-compile"
                         sh "ls -l"
+                        sh "ls -l target/"
                     }
                 }
             }
