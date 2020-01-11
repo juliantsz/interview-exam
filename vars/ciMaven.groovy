@@ -50,7 +50,7 @@ def call() {
                 steps {
                     script {
                         ciUtils.buildImage(
-                            "${env.ec2-user}",//credentials
+                            "ec2-user",//credentials
                             "${env.ec2-ip}"//server
                         )
                     }
