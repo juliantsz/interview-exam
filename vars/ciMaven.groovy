@@ -1,5 +1,5 @@
 def call() {
-    
+    def POM
     pipeline {
         agent {
             node {
@@ -14,7 +14,7 @@ def call() {
             timestamps() 
         }
         stages {
-            stage('Clone Repo'){
+            stage('Clone Repo') {
                 steps {
                     script {
                         sh 'printenv | sort'
@@ -24,6 +24,26 @@ def call() {
                             "https://github.com/daticahealth/java-tomcat-maven-example.git"//url
                         )
                         sh "ls -l"
+                        POM = readMavenPom file: 'pom.xml'
+                    }
+                }
+            }
+            stage('Maven Compile') {
+                steps {
+                    script {
+                        sh """
+                        mvn package
+                        """
+                    }
+                }
+            }
+            stage('Build Docker Image') {
+                steps {
+                    script {
+                        ciUtils.buildImage(
+                            "root-server",//credentials
+                            "${env.devopsciserver}"//server
+                        )
                     }
                 }
             }

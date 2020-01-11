@@ -8,3 +8,15 @@ def gitCheckout(String branch, String credentials, String url){
         userRemoteConfigs: [[credentialsId: "${credentials}", url: "${url}"]]
     ])
 }
+
+def buildImage(String credentials, String server) {
+    def remote = [:]
+    remote.name = "${server}"
+    remote.host = "${server}"
+    remote.allowAnyHosts = true
+    withCredentials([usernamePassword(credentialsId: "${credentials}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        remote.user = 'USERNAME'
+        remote.password = 'PASSWORD'
+        sshCommand remote: remote, command: "cd /home/julian/Documents/Developer ; ls -l"
+    }
+}
