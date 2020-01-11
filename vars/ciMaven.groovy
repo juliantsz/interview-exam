@@ -7,14 +7,22 @@ def call() {
                 customWorkspace "/var/jenkins_home/workspace/${env.BUILD_TAG}"
             }
         }
+        tools {
+            maven 'maven-3.6.3'
+        }
         options {
             timestamps() 
         }
         stages {
-            stage('Init'){
+            stage('Clone Repo'){
                 steps {
                     script {
-                        println("Hello world")
+                        ciUtils.gitCheckout(
+                            "master",//branch
+                            "github",//credentials
+                            "https://github.com/daticahealth/java-tomcat-maven-example.git"//url
+                        )
+                        sh "ls -l"
                     }
                 }
             }
@@ -22,6 +30,7 @@ def call() {
         post {
             cleanup{
                 deleteDir()
+                cleanWs()
             }
         }
     }
