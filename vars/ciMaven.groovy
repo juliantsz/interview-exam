@@ -31,19 +31,10 @@ def call() {
             stage('Maven Compile') {
                 steps {
                     script {
-                        sh """
-                        mvn package
-                        """
-                    }
-                }
-            }
-            stage('Build Docker Image') {
-                steps {
-                    script {
-                        ciUtils.buildImage(
-                            "root-server",//credentials
-                            "${env.devopsciserver}"//server
-                        )
+                        withMaven(
+                            mavenSettingsConfig: 'maven-settings') {
+                            sh "mvn clean verify sonar:sonar"
+                        }
                     }
                 }
             }
