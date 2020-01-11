@@ -52,7 +52,7 @@ def call() {
                         writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
                         sh "ls -l"
                         docker.withRegistry("${docker-hub-url}", "${dockerhub}") {
-                            def dockerImage = docker.build("${POM.artifactId}:${POM.version}")
+                            def dockerImage = docker.build("crafterox4/${POM.artifactId}:${POM.version}")
                             dockerImage.push()
                         }
                     }
