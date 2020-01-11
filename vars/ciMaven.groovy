@@ -46,6 +46,22 @@ def call() {
                     }
                 }
             }
+            stage('Maven test-compile') {
+                steps {
+                    script {
+                        sh "mvn test"
+                        sh "ls -l"
+                        sh "ls -l target/"
+                    }
+                }
+            }
+            stage('Build Docker Image') {
+                steps {
+                    script {
+                        sh "docker ps"
+                    }
+                }
+            }
             /*stage('Maven Scan') {
                 steps {
                     script {
