@@ -50,10 +50,10 @@ def call() {
                 steps {
                     script {
                         println("EC2 IP ADDRESS ${env.ec2-ip}")
-                        ciUtils.buildImage(
+                        /*ciUtils.buildImage(
                             "ec2-user",//credentials
                             "${env.ec2-ip}"//server
-                        )
+                        )*/
                     }
                 }
             }
