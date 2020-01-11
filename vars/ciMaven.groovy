@@ -49,7 +49,8 @@ def call() {
             stage('Build Docker Image') {
                 steps {
                     script {
-                        sh "docker ps"
+                        writeFile file: 'resource/Dockerfile'
+                        sh "ls -l"
                     }
                 }
             }
