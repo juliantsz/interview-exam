@@ -51,7 +51,7 @@ def call() {
                     script {
                         writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
                         sh "ls -l"
-                        docker.withRegistry("${docker-hub-url}", "${dockerhub}") {
+                        docker.withRegistry('https://hub.docker.com/', 'dockerhub') {
                             def dockerImage = docker.build("crafterox4/${POM.artifactId}:${POM.version}")
                             dockerImage.push()
                         }
