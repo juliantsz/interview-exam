@@ -40,7 +40,7 @@ def call() {
             stage('Maven test-compile'){
                 steps {
                     script {
-                        sh "mvn test-compile"
+                        sh "mvn test"
                         sh "ls -l"
                         sh "ls -l target/"
                     }
