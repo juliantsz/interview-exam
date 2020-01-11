@@ -9,6 +9,7 @@ def call() {
         }
         tools {
             maven 'maven-3.6.3'
+            docker 'docker'
         }
         options {
             timestamps() 
@@ -51,10 +52,11 @@ def call() {
                     script {
                         writeFile file: 'Dockerfile', text:libraryResource("Dockerfile")
                         sh "ls -l"
-                        docker.withRegistry('https://hub.docker.com/', 'dockerhub') {
+                        /*docker.withRegistry('https://hub.docker.com/', 'dockerhub') {
                             def dockerImage = docker.build("crafterox4/${POM.artifactId}:${POM.version}")
                             dockerImage.push()
-                        }
+                        }*/
+                        sh "echo $(which docker)"
                     }
                 }
             }
