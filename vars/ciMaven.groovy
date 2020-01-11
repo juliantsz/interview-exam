@@ -37,19 +37,12 @@ def call() {
                     }
                 }
             }
-            stage('Maven test-compile'){
+            stage('Maven test-compile') {
                 steps {
                     script {
                         sh "mvn test"
                         sh "ls -l"
                         sh "ls -l target/"
-                    }
-                }
-            }
-            stage('Maven Scan') {
-                steps {
-                    script {
-                        sh "mvn sonar:sonar"
                     }
                 }
             }
