@@ -34,3 +34,88 @@ ciMaven()
 ```
 @Library llamamos la libreria configurada previamante, tener en cuenta que esta usa la rama definida. En este caso `master`. Luego se llama al archivo groovy en este caso `ciMaven()`. De esta manera se tiene un mayor control sobre el código utilizado por el DevOps y no mezclarlo con el de los desarrolladores.
 
+
+##### Ejecución del Pipeline
+
+- Empezamos el pipeline definiendo en que nodo correr y su workspace
+```
+agent {
+    node {
+        label "master"
+        customWorkspace "/var/jenkins_home/workspace/${env.BUILD_TAG}"
+    }
+}
+```
+- Agregamos una instalación de maven en tiempo de ejecución. De esta manera evitamos que entrar al maestro o esclavo e instalar maven en este caso. Sino que Jenkins hace esto por nosotros instalando una `tool` definida en `configuration/managed tools`. Otra ventaja es cambiar de versión rapidamente simplemente cambiando el `tool`
+```
+tools {
+    maven 'maven-3.6.3'
+}
+options {
+    timestamps() 
+}
+```
+- La primera etapa es clonar el repositorio
+```
+stage('Clone Repo') {
+    steps {
+        script {
+            sh 'printenv | sort'
+            ciUtils.gitCheckout(
+                "master",//branch
+                "github",//credentials
+                "https://github.com/daticahealth/java-tomcat-maven-example.git"//url
+            )
+            POM = readMavenPom file: 'pom.xml'
+        }
+    }
+}
+```
+`ciUtils.gitCheckout()` es una función definida del archivo `vars/ciUtils`. Esto ayuda a la reutilización de código simplemente llamando la función y pasando los parámetros necesarios.
+
+``` ciUtils.groovy
+def gitCheckout(String branch, String credentials, String url){
+    checkout([
+        $class: 'GitSCM', 
+        branches: [[name: "${branch}"]], 
+        doGenerateSubmoduleConfigurations: false, 
+        extensions: [[$class: 'CleanCheckout']], 
+        submoduleCfg: [],
+        userRemoteConfigs: [[credentialsId: "${credentials}", url: "${url}"]]
+    ])
+}
+```
+[checkout](https://wiki.jenkins.io/display/JENKINS/Git+Plugin) lo podemos encontrar en el plugin de Git
+
+- Etapas maven
+```
+stage('Maven Compile') {
+    steps {
+        script {
+            withMaven(
+                mavenSettingsConfig: 'maven-settings') {
+                sh "mvn package"
+            }
+        }
+    }
+}
+stage('Maven test-compile') {
+    steps {
+        script {
+            sh "mvn test"
+        }
+    }
+}
+stage('Maven Scan') {
+    steps {
+        script {
+            sh "mvn sonar:sonar"
+        }
+    }
+}
+```
+con `mvn package` generamos los artefactos. `mvn test` realizamos pruebas unitarias y definiendo un `goal` en el `settings.xml` podemos ejecutar `mvn sonar:sonar` y ver mas detalles en cuanto a seguridad y calidad de código y definir quality gates
+[sonar-home](https://github.com/juliantsz/images/blob/master/sonar.png)
+[sonar-detailed](https://github.com/juliantsz/images/blob/master/sonar-overview.png)
+
+
