@@ -61,7 +61,7 @@ def call() {
             stage('Deploy Pod') {
                 steps {
                     script {
-                        ciUtils.buildImage(
+                        ciUtils.deployPod(
                             "cloud_user",//credentials
                             "${env.k8_server}"//server
                         )

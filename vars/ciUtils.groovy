@@ -28,7 +28,7 @@ def buildImage(String credentials, String server, String artifactId, String vers
     }
 }
 
-def deployPod(String credentials, String server, String artifactId, String version) {
+def deployPod(String credentials, String server) {
     writeFile file: 'pod.yml', text:libraryResource("pod/pod.yml")
     writeFile file: 'service.yml', text:libraryResource("pod/service.yml")
     def remote = [:]
