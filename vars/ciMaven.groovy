@@ -46,15 +46,24 @@ def call() {
                     }
                 }
             }
-            stage('Build Docker Image') {
+            /*stage('Build Docker Image') {
                 steps {
                     script {
-                        println("EC2 IP ADDRESS ${env.ec2ip}")
                         ciUtils.buildImage(
                             "ec2user",//credentials
                             "${env.ec2ip}",//server
                             "${POM.artifactId}",//artifactId
                             "${POM.version}"//version
+                        )
+                    }
+                }
+            }*/
+            stage('Deploy Pod') {
+                steps {
+                    script {
+                        ciUtils.buildImage(
+                            "cloud_user",//credentials
+                            "${env.k8_server}"//server
                         )
                     }
                 }
