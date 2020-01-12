@@ -48,7 +48,7 @@ agent {
     }
 }
 ```
-- Agregamos una instalación de maven en tiempo de ejecución. De esta manera evitamos que entrar al maestro o esclavo e instalar maven en este caso. Sino que Jenkins hace esto por nosotros instalando una `tool` definida en `configuration/managed tools`. Otra ventaja es cambiar de versión rapidamente simplemente cambiando el `tool`
+- Agregamos una instalación de maven en tiempo de ejecución. De esta manera evitamos entrar al contenedor maestro o esclavo e instalar maven. Con las tools Jenkins hace esto por nosotros, las `tool` se configuran en `configuration/managed tools`. Otra ventaja es cambiar de versión rapidamente simplemente cambiando el `tool` sin necesidad de eliminar versiones o crear `Dockerfile` por cada herramienta a utilizar.
 ```
 tools {
     maven 'maven-3.6.3'
@@ -57,6 +57,7 @@ options {
     timestamps() 
 }
 ```
+
 - La primera etapa es clonar el repositorio
 ```
 stage('Clone Repo') {
@@ -73,7 +74,7 @@ stage('Clone Repo') {
     }
 }
 ```
-`ciUtils.gitCheckout()` es una función definida dentro del archivo `vars/ciUtils`. Esto ayuda a la reutilización de código simplemente llamando la función y pasando los parámetros necesarios.
+`ciUtils.gitCheckout()` es una función definida dentro del archivo `vars/ciUtils`. Esto ayuda a la reutilización de código simplemente llamando a la función y pasando los parámetros necesarios.
 
 ``` ciUtils.groovy
 def gitCheckout(String branch, String credentials, String url){
@@ -168,7 +169,7 @@ stage('Build Docker Image') {
 ```
 En esta etapa se ejecuta la función `buildImage` dentro del archivo `ciUtils.groovy` con los respectivos parametros.
 
-``` buildImage()
+``` ciUtils.groovy
 
 def buildImage(String credentials, String server, String artifactId, String version) {
     writeFile file: 'Dockerfile', text:libraryResource("docker/Dockerfile")
@@ -216,9 +217,9 @@ stage('Deploy Pod') {
 }
 ```
 
-Muy similiar a la construcción de la imágen Doccker, el despliegue al clúster de Kubernetes hace uso de una función llamada `deployPod`
+Muy similiar a la construcción de la imágen Docker, el despliegue al clúster de Kubernetes hace uso de una función llamada `deployPod()`
 
-``` deployPod()
+``` ciUtils.groovy
 def deployPod(String credentials, String server) {
     writeFile file: 'pod.yml', text:libraryResource("pod/pod.yml")
     writeFile file: 'service.yml', text:libraryResource("pod/service.yml")
