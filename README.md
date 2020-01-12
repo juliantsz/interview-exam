@@ -16,7 +16,7 @@ Para tener un servidor de Jenkins en el cual trabajar opte por la opción de con
 ##### jenkins-shared-libraries
 Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfile` sin embargo el problema es que este archivo es guardado en el repositorio donde se encuentra el código de los desarrolladores, corriendo el riesgo de ser modificado o eliminado por alguien distinto al DevOps del proyecto. Con [jenkins-shared-libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) se define un repositorio donde se versiona el código utilizado por el DevOps. De esta manera se tiene por un lado el código de los desarrolladores y el código del DevOps separado, evitando conflictos. Para su uso es necesario cierta configuración y estructura del repositorio.
 
-1. en las configuraciones de Jenkins buscamos la sección llamada `Global Pipeline Libraries` y agregamos el nombre de la librearia compartida, rama default que queremos usar (por lo general `master`), url del repositorio, credenciales y que tipo de repositorio es. 
+1. en las configuraciones de Jenkins buscamos la sección llamada `Global Pipeline Libraries` y agregamos el nombre de la librearia compartida, rama default que queremos usar (por lo general `master`), url del repositorio, credenciales y el tipo de repositorio. 
 ![alt text](https://github.com/juliantsz/images/blob/master/shared-library.png)
 
 2. El repositorio debe seguir una estructura especifica
