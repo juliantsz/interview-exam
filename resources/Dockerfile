@@ -1,8 +1,9 @@
-# we are extending everything from tomcat:8.0 image ...
-FROM tomcat:8.0
+FROM openjdk:8-jre-alpine
 
-MAINTAINER jtuberquia07@outlook.com
+COPY app.war /usr/app/
 
-# COPY path-to-your-application-war path-to-webapps-in-docker-tomcat
+COPY app.jar /usr/app/
 
-COPY target/${POM.artifactId} /usr/local/tomcat/webapps/
+WORKDIR /usr/app
+
+CMD java -jar app.jar app.war
