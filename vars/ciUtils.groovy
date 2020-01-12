@@ -25,5 +25,6 @@ def buildImage(String credentials, String server) {
         sshPut remote: remote, from: "${WORKSPACE}/target/${POM.artifactId}.war", into: '/home/ec2-user/app.war'
         sshPut remote: remote, from: "${WORKSPACE}/target/dependency/webapp-runner.jar", into: '/home/ec2-user/app.jar'
         sshCommand remote: remote, command: "cd /home/ec2-user/; ./buildImage.sh ${dockerhub_user}${POM.artifactId} ${POM.version}"
+        sshCommand remote: remote, command: "cd /home/ec2-user/; rm *"
     }
 }
