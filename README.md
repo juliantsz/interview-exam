@@ -34,7 +34,7 @@ Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfi
 @Library('jenkins-library') _
 ciMaven()
 ```
-@Library llamamos la libreria configurada previamante, tener en cuenta que esta usa la rama definida. En este caso `master`. Luego se llama al archivo groovy en este caso `ciMaven()`. De esta manera se tiene un mayor control sobre el código utilizado por el DevOps y no mezclarlo con el de los desarrolladores.
+`@Library` llamamos la libreria configurada previamante, tener en cuenta que esta usa la rama definida. En este caso `master`. Luego se llama al archivo groovy en este caso `ciMaven()`. De esta manera se tiene un mayor control sobre el código utilizado por el DevOps y no mezclarlo con el de los desarrolladores.
 
 
 ##### Ejecución del Pipeline
