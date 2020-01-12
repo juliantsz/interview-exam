@@ -52,7 +52,9 @@ def call() {
                         println("EC2 IP ADDRESS ${env.ec2ip}")
                         ciUtils.buildImage(
                             "ec2user",//credentials
-                            "${env.ec2ip}"//server
+                            "${env.ec2ip}",//server
+                            "${POM.artifactId}",//artifactId
+                            "${POM.version}"//version
                         )
                     }
                 }
