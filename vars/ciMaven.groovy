@@ -46,13 +46,13 @@ def call() {
                     }
                 }
             }
-            /*stage('Maven Scan') {
+            stage('Maven Scan') {
                 steps {
                     script {
                         sh "mvn sonar:sonar"
                     }
                 }
-            }*/
+            }
             /*stage('Build Docker Image') {
                 steps {
                     script {
@@ -64,7 +64,7 @@ def call() {
                         )
                     }
                 }
-            }*/
+            }
             stage('Deploy Pod') {
                 steps {
                     script {
@@ -74,7 +74,7 @@ def call() {
                         )
                     }
                 }
-            }
+            }*/
         }
         post {
             cleanup{
