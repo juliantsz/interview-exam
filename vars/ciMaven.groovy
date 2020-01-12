@@ -41,8 +41,6 @@ def call() {
                 steps {
                     script {
                         sh "mvn test"
-                        sh "ls -l"
-                        sh "ls -l target/"
                     }
                 }
             }
@@ -53,7 +51,7 @@ def call() {
                     }
                 }
             }
-            /*stage('Build Docker Image') {
+            stage('Build Docker Image') {
                 steps {
                     script {
                         ciUtils.buildImage(
@@ -74,7 +72,7 @@ def call() {
                         )
                     }
                 }
-            }*/
+            }
         }
         post {
             cleanup{
