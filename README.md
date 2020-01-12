@@ -116,6 +116,8 @@ stage('Maven Scan') {
 ```
 con `mvn package` generamos los artefactos. `mvn test` realizamos pruebas unitarias y definiendo un `goal` en el `settings.xml` podemos ejecutar `mvn sonar:sonar` y ver mas detalles en cuanto a seguridad y calidad de código y definir quality gates
 [sonar-home](https://github.com/juliantsz/images/blob/master/sonar.png)
+
+
 [sonar-detailed](https://github.com/juliantsz/images/blob/master/sonar-overview.png)
 
 `settings.xml` definido en managed files
