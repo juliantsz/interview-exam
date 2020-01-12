@@ -197,3 +197,53 @@ Primero generamos un archivo [Dockerfile](https://github.com/juliantsz/jenkins-s
 
 - Por último, con otro `sshCommand` eliminamos todo lo copiado al servidor. De esta manera estará limpio para la siguiente ejecución.
 
+
+- Despliegue a un clúster de Kubernetes
+```
+stage('Deploy Pod') {
+    steps {
+        script {
+            ciUtils.deployPod(
+                "cloud_user",//credentials
+                "${env.k8_server}"//server
+            )
+        }
+    }
+}
+```
+
+Muy similiar a la construcción de la imágen Doccker, el despliegue al clúster de Kubernetes hace uso de una función llamada `deployPod`
+
+``` deployPod()
+def deployPod(String credentials, String server) {
+    writeFile file: 'pod.yml', text:libraryResource("pod/pod.yml")
+    writeFile file: 'service.yml', text:libraryResource("pod/service.yml")
+    def remote = [:]
+    remote.name = "${server}"
+    remote.host = "${server}"
+    remote.allowAnyHosts = true
+    withCredentials([usernamePassword(credentialsId: "${credentials}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        remote.user = USERNAME
+        remote.password = PASSWORD
+        sshPut remote: remote, from: "${WORKSPACE}/pod.yml", into: '/home/cloud_user/'
+        sshPut remote: remote, from: "${WORKSPACE}/service.yml", into: '/home/cloud_user/'
+        sshCommand remote: remote, command: "cd /home/cloud_user/; kubectl apply -f pod.yml"
+        sshCommand remote: remote, command: "cd /home/cloud_user/; kubectl apply -f service.yml"
+        sshCommand remote: remote, command: "cd /home/cloud_user/; rm pod.yml service.yml"
+    }
+}
+```
+
+- Primero generamos dos archivo `yaml` tomados de la carpeta `resources`. [pod.yml](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/pod/pod.yml) encargado de generar un despliegue con dos replicas usando la imágen subida a [docker hub](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example) y [service.yml](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/pod/service.yml) para poder acceder a ella desde afuera del clúster. 
+
+- Copiamos estos dos `yaml` al servidor con `sshPut` en la ruta `home/cloud_user/` 
+
+- Con `sshCommand` ejecutamos estos dos `yaml` dentro del servido. `kubectl apply -f`.
+
+- Eliminar estos dos `yaml` con un `sshCommand` 
+
+#### Verificar
+
+Para verificar despliegue. En un explorador ingresar la dirección ip del servidor o dns, seguido del puerto definido en el `service.yml` 
+
+[webapp](https://github.com/juliantsz/images/blob/master/webapp.png)
