@@ -250,4 +250,4 @@ def deployPod(String credentials, String server) {
 
 Para verificar despliegue. En un explorador ingresar la dirección ip del servidor o dns, seguido del puerto definido en el `service.yml` 
 
-[webapp](https://github.com/juliantsz/images/blob/master/webapp.png)
+![alt text](https://github.com/juliantsz/images/blob/master/webapp.png)
