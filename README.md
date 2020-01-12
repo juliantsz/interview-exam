@@ -71,7 +71,7 @@ stage('Clone Repo') {
     }
 }
 ```
-`ciUtils.gitCheckout()` es una función definida del archivo `vars/ciUtils`. Esto ayuda a la reutilización de código simplemente llamando la función y pasando los parámetros necesarios.
+`ciUtils.gitCheckout()` es una función definida dentro del archivo `vars/ciUtils`. Esto ayuda a la reutilización de código simplemente llamando la función y pasando los parámetros necesarios.
 
 ``` ciUtils.groovy
 def gitCheckout(String branch, String credentials, String url){
@@ -118,4 +118,82 @@ con `mvn package` generamos los artefactos. `mvn test` realizamos pruebas unitar
 [sonar-home](https://github.com/juliantsz/images/blob/master/sonar.png)
 [sonar-detailed](https://github.com/juliantsz/images/blob/master/sonar-overview.png)
 
+`settings.xml` definido en managed files
+```
+<settings>
+    <pluginGroups>
+        <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
+    </pluginGroups>
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <properties>
+                <sonar.host.url>
+                  http://127.0.0.1:9000
+                </sonar.host.url>
+                <sonar.login>
+                  0214e4e78d5bd10c0202c9e9bbea3f4118bfd603
+              </sonar.login>
+            </properties>
+        </profile>
+     </profiles>
+    <activeProfiles>
+      <activeProfile>sonar</activeProfile>
+    </activeProfiles>
+</settings>
+```
+Para evitar que colocar las credenciales de acceso a sonar, generamos un token dentro de sonar. De esta manera en la llave `<sonar.login>` ingresamos este token y así poder publicar los proyectos escaneados en sonar.
+
+Para este proyecto sonar fue ejecutado en un contenedor de Docker
+
+- Construcción de imágen Docker
+
+```
+stage('Build Docker Image') {
+    steps {
+        script {
+            ciUtils.buildImage(
+                "ec2user",//credentials
+                "${env.ec2ip}",//server
+                "${POM.artifactId}",//artifactId
+                "${POM.version}"//version
+            )
+        }
+    }
+}
+```
+En esta etapa se ejecuta la función `buildImage` dentro del archivo `ciUtils.groovy` con los respectivos parametros.
+
+``` buildImage()
+
+def buildImage(String credentials, String server, String artifactId, String version) {
+    writeFile file: 'Dockerfile', text:libraryResource("docker/Dockerfile")
+    writeFile file: 'buildImage.sh', text:libraryResource("bash/buildImage.sh")
+    def remote = [:]
+    remote.name = "${server}"
+    remote.host = "${server}"
+    remote.allowAnyHosts = true
+    withCredentials([usernamePassword(credentialsId: "${credentials}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        remote.user = USERNAME
+        remote.password = PASSWORD
+        sshPut remote: remote, from: "${WORKSPACE}/Dockerfile", into: '/home/ec2-user/'
+        sshPut remote: remote, from: "${WORKSPACE}/buildImage.sh", into: '/home/ec2-user/'
+        sshPut remote: remote, from: "${WORKSPACE}/target/${artifactId}.war", into: '/home/ec2-user/app.war'
+        sshPut remote: remote, from: "${WORKSPACE}/target/dependency/webapp-runner.jar", into: '/home/ec2-user/app.jar'
+        sshCommand remote: remote, command: "cd /home/ec2-user/; chmod +x buildImage.sh; ./buildImage.sh ${env.dockerhub_user}${artifactId} ${version}"
+        sshCommand remote: remote, command: "cd /home/ec2-user/; rm *"
+    }
+}
+```
+Primero generamos un archivo [Dockerfile](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/docker/Dockerfile) y un shell script [buildImage.sh](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/bash/buildImage.sh) tomados de la carpeta `resources` del jenkins-shared-library al `workspace` del pipeline. Luego haciendo uso del plugin [SSH Pipeline Steps](https://plugins.jenkins.io/ssh-steps) nos conectamos a un servidor para poder construir la imagen Docker. Este servidor es una instancia ec2 con docker instalado. 
+
+- La dirección ip del servidor esta guardada como variable de entorno en Jenkins, de esta manera si dicha dirección cambia solo basta con cambiarla en un solo lugar sin modificar código.
+
+- `withCredentials` nos permite mapear el usuario y contraseña tomadas de las credenciales de Jenkins de manera segura
+
+- Una vez conectados al servidor procedemos primero a copiar el `Dockerfile`, `buildImage.sh`, `war generado` y `webapp-runner.jar` a la ruta `home/ec2-user/` dentro del servidor.
+
+- Copiado todo esto con `sshCommand` ejecutamos comandos dentro del servidor. Para simplicidad y no tener que ejecutar varios comandos, procedemos a ejecutar el shell. Este shell hará todo el trabajo por nosotros. Como construir la imágen, subir la imágen a [docker hub](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example) y eliminar la imágen del servidor. 
+
+- Por último, con otro `sshCommand` eliminamos todo lo copiado al servidor. De esta manera estará limpio para la siguiente ejecución.
 
