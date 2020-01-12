@@ -1,5 +1,7 @@
 # Reto Devops
 
+### Imágen Docker Generada [java-tomcat-maven-example](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example)
+
 ### Setup de Jenkins
 
 Para tener un servidor de Jenkins en el cual trabajar opte por la opción de contenedor con Docker corriendo en mi local, con la portabilidad de Docker este contenedor de Jenkins puede ser levantado en la nube o on-premise. Ejecutando este archivo [yaml](https://github.com/juliantsz/jenkins-shared-library/blob/master/src/jenkins-compose.yml) con `docker-compose`. En el explorador colocamos la dirección `ip` del servidor (127.0.0.1 para localhost) seguido del puerto `8080`, `127.0.0.1:8080`. De esta manera tenemos Jenkins.
