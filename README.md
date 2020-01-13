@@ -18,7 +18,7 @@
 [Config File Provider Plugin](https://wiki.jenkins.io/display/JENKINS/Config+File+Provider+Plugin) Nos permite inyectar archivos de configuración en tiempo de ejecución del pipeline. Por ejemplo `settings.xml`. De esta manera se puede modificar sin tener que ingresar a un servidor o contenedor.
 
 ##### jenkins-shared-libraries
-Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfile` sin embargo el problema es que este archivo es guardado en el repositorio donde se encuentra el código de los desarrolladores, corriendo el riesgo de ser modificado o eliminado por alguien distinto al DevOps del proyecto. Con [jenkins-shared-libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) se define un repositorio donde se versiona el código utilizado por el DevOps. De esta manera se tiene por un lado el código de la aplicación y por el otro el código del DevOps, con esto el DevOps se encarga de versionar su código sin haver modificaciones en el repositorio de los desarrolladores. Para su uso es necesario cierta configuración y estructura específica de las carpetas en el repositorio.
+Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfile` sin embargo el problema es que este archivo es guardado en el repositorio donde se encuentra el código de los desarrolladores, corriendo el riesgo de ser modificado o eliminado por alguien distinto al DevOps del proyecto. Con [jenkins-shared-libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) se define un repositorio donde se versiona el código utilizado por el DevOps. De esta manera se tiene por un lado el código de la aplicación y por el otro el código del DevOps, con esto el DevOps se encarga de versionar su código sin hacer modificaciones en el repositorio de los desarrolladores. Para su uso es necesario cierta configuración y estructura específica de las carpetas en el repositorio.
 
 1. En las configuraciones de Jenkins buscamos la sección llamada `Global Pipeline Libraries` y agregamos lo siguiente:
 - Nombre de la librearia compartida
@@ -32,10 +32,10 @@ Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfi
 2. El repositorio debe seguir una estructura específica
 ```
 (root)
-+- src                     # Groovy source files
++- src                    # Groovy source files
 |
 +- vars
-|   +- ci.groovy          # Para variables globales
+|   +- ciUtils.groovy     # Para variables globales
 +- resources              # resource files como .sh, .yaml, .tf etc
 |   
 ```
@@ -128,10 +128,12 @@ stage('Maven Scan') {
 }
 ```
 con `mvn package` generamos los artefactos. `mvn test` realizamos pruebas unitarias y definiendo un `goal` en el `settings.xml` podemos ejecutar `mvn sonar:sonar` y ver mas detalles en cuanto a seguridad y calidad de código y definir quality gates
+
 ![alt text](https://github.com/juliantsz/images/blob/master/sonar.png)
 
 
 ![alt text](https://github.com/juliantsz/images/blob/master/sonar-overview.png)
+
 
 `settings.xml` definido en managed files
 ```
