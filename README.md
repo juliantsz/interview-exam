@@ -258,7 +258,9 @@ def deployPod(String credentials, String server) {
 }
 ```
 
-- Primero generamos dos archivo `yaml` tomados de la carpeta `resources`. [pod.yml](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/pod/pod.yml) encargado de generar un despliegue con dos replicas usando la imágen subida a [docker hub](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example) y [service.yml](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/pod/service.yml) para poder acceder a ella desde afuera del clúster. 
+- Primero generamos dos archivo `yaml` tomados de la carpeta `resources`. 
+    - [pod.yml](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/pod/pod.yml) encargado de generar un despliegue con dos replicas usando la imágen subida a [docker hub](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example) 
+    - [service.yml](https://github.com/juliantsz/jenkins-shared-library/blob/master/resources/pod/service.yml) para poder acceder a ella desde afuera del clúster. 
 
 - Copiamos estos dos `yaml` al servidor con `sshPut` en la ruta `home/cloud_user/` 
 
