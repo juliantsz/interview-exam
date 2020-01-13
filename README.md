@@ -259,6 +259,6 @@ def deployPod(String credentials, String server) {
 
 #### Verificar
 
-Para verificar despliegue. En un explorador ingresar la dirección ip del servidor o dns, seguido del puerto definido en el `service.yml` 
+Para verificar el despliegue, en un explorador ingresamos la dirección ip del servidor o dns donde esté el kube master, seguido del puerto definido en el `service.yml` 
 
 ![alt text](https://github.com/juliantsz/images/blob/master/webapp.png)
