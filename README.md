@@ -2,9 +2,10 @@
 
 ### Imágen Docker Generada [java-tomcat-maven-example](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example)
 
-### Setup de Jenkins
+### Jenkins
+- Arhivo groovy principal [ciMaven.groovy](https://github.com/juliantsz/jenkins-shared-library/blob/master/vars/ciMaven.groovy)
 
-Para tener un servidor de Jenkins en el cual trabajar opte por la opción de contenedor con Docker corriendo en mi local, con la portabilidad de Docker este contenedor de Jenkins puede ser levantado en la nube o on-premise. Ejecutando este archivo [yaml](https://github.com/juliantsz/jenkins-shared-library/blob/master/src/jenkins-compose.yml) con `docker-compose`. En el explorador colocamos la dirección `ip` del servidor (127.0.0.1 para localhost) seguido del puerto `8080`, `127.0.0.1:8080`. De esta manera tenemos Jenkins.
+- Para tener un servidor de Jenkins en el cual trabajar opte por la opción de contenedor con Docker corriendo en mi local, con la portabilidad de Docker este contenedor de Jenkins puede ser levantado en la nube o on-premise. Ejecutando este archivo [yaml](https://github.com/juliantsz/jenkins-shared-library/blob/master/src/jenkins-compose.yml) con `docker-compose`. En el explorador colocamos la dirección `ip` del servidor (127.0.0.1 para localhost) seguido del puerto `8080`, `127.0.0.1:8080`. De esta manera tenemos Jenkins.
 
 ##### plugins utilizados
 [pipeline-utility-steps](https://plugins.jenkins.io/pipeline-utility-steps) Este plugin nos permite leer y escribir archivos como `yaml`, `json`, `properties`, `pom.xml`, etc. En este proyecto fue utilizado para leer el archivo `pom.xml` dentro del repositorio para poder obtener el `artifactId` y `version` del proyecto. De esta manera las imágenes Docker son generadas dinámicamente leyendo este archivo.
