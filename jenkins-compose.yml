@@ -8,4 +8,4 @@ services:
       - "50000:50000"
       - "22:22"
     volumes:
-      - /home/julian/Documents/Developer/jenkins_home:/var/jenkins_home
+      - /home/user/jenkins_home:/var/jenkins_home
