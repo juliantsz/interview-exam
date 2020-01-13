@@ -70,9 +70,9 @@ options {
 ```
 
 - La primera etapa es clonar el repositorio
- + Especificando la rama a clonar
- + Credenciales
- + Url del repositorio git
+    - Especificando la rama a clonar
+    - Credenciales
+    - Url del repositorio git
 ```
 stage('Clone Repo') {
     steps {
