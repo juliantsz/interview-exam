@@ -25,7 +25,8 @@ Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfi
 - Rama por defecto que queremos usar (por lo general se usa `master`)
 - Url del repositorio del jenkins-shared-library
 - Credenciales para acceder al repositorio
-- Repositorio GIT. 
+- Repositorio GIT
+
 ![alt text](https://github.com/juliantsz/images/blob/master/shared-library.png)
 
 2. El repositorio debe seguir una estructura específica
