@@ -59,7 +59,7 @@ agent {
     }
 }
 ```
-- Agregamos una instalación de maven en tiempo de ejecución. De esta manera evitamos entrar al contenedor maestro o esclavo e instalar maven. Con las tools Jenkins hace esto por nosotros, las `tool` se configuran en `configuration/managed tools`. Otra ventaja es cambiar de versión rapidamente simplemente cambiando el `tool` sin necesidad de eliminar versiones o crear `Dockerfile` por cada herramienta a utilizar.
+- Agregamos una instalación de maven en tiempo de ejecución. De esta manera evitamos entrar al contenedor maestro o esclavo e instalar maven. Con las tools Jenkins hace esto por nosotros, las `tools` se configuran en `configuration/managed tools`. Otra ventaja es cambiar de versión rapidamente simplemente cambiando el `tool` sin necesidad de eliminar versiones o crear `Dockerfile` por cada herramienta a utilizar.
 ```
 tools {
     maven 'maven-3.6.3'
@@ -70,6 +70,9 @@ options {
 ```
 
 - La primera etapa es clonar el repositorio
+ + Especificando la rama a clonar
+ + Credenciales
+ + Url del repositorio git
 ```
 stage('Clone Repo') {
     steps {
@@ -78,7 +81,7 @@ stage('Clone Repo') {
             ciUtils.gitCheckout(
                 "master",//branch
                 "github",//credentials
-                "https://github.com/daticahealth/java-tomcat-maven-example.git"//url
+                "${env.HttpGitUrl}"//url
             )
             POM = readMavenPom file: 'pom.xml'
         }
