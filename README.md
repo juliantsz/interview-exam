@@ -2,6 +2,8 @@
 
 ### Docker
 - Imágen Docker Generada [java-tomcat-maven-example](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example)
+- [Jenkins Compose](https://github.com/juliantsz/jenkins-shared-library/blob/master/jenkins-compose.yml)
+- [Sonar Compose](https://github.com/juliantsz/jenkins-shared-library/blob/master/sonar-compose.yml)
 
 ### Jenkins
 - Arhivo groovy principal [ciMaven.groovy](https://github.com/juliantsz/jenkins-shared-library/blob/master/vars/ciMaven.groovy)
