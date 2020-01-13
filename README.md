@@ -39,12 +39,13 @@ Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfi
 +- resources              # resource files como .sh, .yaml, .tf etc
 |   
 ```
-3. Se crea un `pipeline` en Jenkins, luego en la configuración de este, en la última configuración llamada `pipeline` escribimos lo siguiente
+3. Se crea un `pipeline` en Jenkins, luego en la configuración de este, en la sección llamada `Pipeline` escribimos lo siguiente en el cuadro
 ```
 @Library('jenkins-library') _
 ciMaven()
 ```
-Con `@Library` llamamos la libreria configurada previamante, tener en cuenta que esta usa la rama definida, en este caso `master`. Luego se llama al archivo groovy, en este caso `ciMaven()`. De esta manera se tiene un repositorio exlusivo para integración y despliegue continuo, sin tener `Jenkinsfiles` dentro del repositorio de la aplicación.
+
+Con `@Library('jenkins-library') _` llamamos la libreria configurada previamante, tener en cuenta que esta usa la rama definida, en este caso `master`. Luego se llama al archivo groovy, en este caso `ciMaven()`. De esta manera se tiene un repositorio exlusivo para integración y despliegue continuo, sin tener `Jenkinsfiles` dentro del repositorio de la aplicación.
 
 
 ##### Ejecución del Pipeline
