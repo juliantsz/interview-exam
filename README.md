@@ -88,7 +88,7 @@ stage('Clone Repo') {
     }
 }
 ```
-`ciUtils.gitCheckout()` es una función definida dentro del archivo `vars/ciUtils`. Esto ayuda a la reutilización de código simplemente llamando a la función y pasando los parámetros necesarios.
+`ciUtils.gitCheckout()` es una función definida dentro del archivo `vars/ciUtils`. Esta función es la encargada de clonar el repositorio al `workspace` del pipeline.
 
 ``` ciUtils.groovy
 def gitCheckout(String branch, String credentials, String url){
@@ -131,7 +131,9 @@ stage('Maven Scan') {
     }
 }
 ```
-con `mvn package` generamos los artefactos. `mvn test` realizamos pruebas unitarias y definiendo un `goal` en el `settings.xml` podemos ejecutar `mvn sonar:sonar` y ver mas detalles en cuanto a seguridad y calidad de código y definir quality gates
+- `mvn package` generamos los artefactos
+- `mvn test` realizamos pruebas unitarias
+- Definiendo un `goal` en el `settings.xml` podemos ejecutar `mvn sonar:sonar` y ver mas detalles en cuanto a seguridad y calidad de código y definir quality gates
 
 ![alt text](https://github.com/juliantsz/images/blob/master/sonar.png)
 
@@ -139,7 +141,7 @@ con `mvn package` generamos los artefactos. `mvn test` realizamos pruebas unitar
 ![alt text](https://github.com/juliantsz/images/blob/master/sonar-overview.png)
 
 
-`settings.xml` definido en managed files
+El `settings.xml` mencionado anteriormente está definido en managed files dentro de Jenkins. Este tipo de configuración es útil para mantener centralizado el `settings.xml`
 ```
 <settings>
     <pluginGroups>
@@ -163,7 +165,7 @@ con `mvn package` generamos los artefactos. `mvn test` realizamos pruebas unitar
     </activeProfiles>
 </settings>
 ```
-Para evitar que colocar las credenciales de acceso a sonar, generamos un token dentro de sonar. De esta manera en la llave `<sonar.login>` ingresamos este token y así poder publicar los proyectos escaneados en sonar.
+Para evitar colocar las credenciales de acceso a sonar, generamos un token dentro de sonar. De esta manera en la llave `<sonar.login>` ingresamos este token y así poder publicar los proyectos escaneados en sonar.
 
 Para este proyecto sonar fue ejecutado en un contenedor de Docker
 
