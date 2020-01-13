@@ -18,9 +18,14 @@
 [Config File Provider Plugin](https://wiki.jenkins.io/display/JENKINS/Config+File+Provider+Plugin) Nos permite inyectar archivos de configuración en tiempo de ejecución del pipeline. Por ejemplo `settings.xml`. De esta manera se puede modificar sin tener que ingresar a un servidor o contenedor.
 
 ##### jenkins-shared-libraries
-Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfile` sin embargo el problema es que este archivo es guardado en el repositorio donde se encuentra el código de los desarrolladores, corriendo el riesgo de ser modificado o eliminado por alguien distinto al DevOps del proyecto. Con [jenkins-shared-libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) se define un repositorio donde se versiona el código utilizado por el DevOps. De esta manera se tiene por un lado el código de los desarrolladores y el código del DevOps separado, evitando conflictos. Para su uso es necesario cierta configuración y estructura del repositorio.
+Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfile` sin embargo el problema es que este archivo es guardado en el repositorio donde se encuentra el código de los desarrolladores, corriendo el riesgo de ser modificado o eliminado por alguien distinto al DevOps del proyecto. Con [jenkins-shared-libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) se define un repositorio donde se versiona el código utilizado por el DevOps. De esta manera se tiene por un lado el código de la aplicación y por el otro el código del DevOps, con esto el DevOps se encarga de versionar su código sin haver modificaciones en el repositorio de los desarrolladores. Para su uso es necesario cierta configuración y estructura específica de las carpetas en el repositorio.
 
-1. En las configuraciones de Jenkins buscamos la sección llamada `Global Pipeline Libraries` y agregamos el nombre de la librearia compartida, rama default que queremos usar (por lo general `master`), url del repositorio, credenciales y el tipo de repositorio. 
+1. En las configuraciones de Jenkins buscamos la sección llamada `Global Pipeline Libraries` y agregamos lo siguiente:
+- Nombre de la librearia compartida
+- Rama por defecto que queremos usar (por lo general se usa `master`)
+- Url del repositorio del jenkins-shared-library
+- Credenciales para acceder al repositorio
+- Repositorio GIT. 
 ![alt text](https://github.com/juliantsz/images/blob/master/shared-library.png)
 
 2. El repositorio debe seguir una estructura específica
