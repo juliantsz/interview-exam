@@ -21,7 +21,7 @@ def call() {
                         ciUtils.gitCheckout(
                             "master",//branch
                             "github",//credentials
-                            "https://github.com/daticahealth/java-tomcat-maven-example.git"//url
+                            "${env.HttpGitUrl}"//url
                         )
                         POM = readMavenPom file: 'pom.xml'
                     }
