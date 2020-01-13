@@ -141,7 +141,7 @@ stage('Maven Scan') {
 ![alt text](https://github.com/juliantsz/images/blob/master/sonar-overview.png)
 
 
-El `settings.xml` mencionado anteriormente está definido en managed files dentro de Jenkins. Este tipo de configuración es útil para mantener centralizado el `settings.xml`
+El `settings.xml` mencionado anteriormente está definido en managed files dentro de Jenkins. Este tipo de configuración es útil para mantener centralizado el `settings.xml` e inyectarlo en tiempo de ejecución al job.
 ```
 <settings>
     <pluginGroups>
@@ -152,7 +152,7 @@ El `settings.xml` mencionado anteriormente está definido en managed files dentr
             <id>sonar</id>
             <properties>
                 <sonar.host.url>
-                  http://127.0.0.1:9000
+                  http://3.45.121.58:9000
                 </sonar.host.url>
                 <sonar.login>
                   0214e4e78d5bd10c0202c9e9bbea3f4118bfd603
@@ -165,9 +165,9 @@ El `settings.xml` mencionado anteriormente está definido en managed files dentr
     </activeProfiles>
 </settings>
 ```
-Para evitar colocar las credenciales de acceso a sonar, generamos un token dentro de sonar. De esta manera en la llave `<sonar.login>` ingresamos este token y así poder publicar los proyectos escaneados en sonar.
+Para evitar colocar las credenciales de acceso a sonar, generamos un token dentro de sonar y lo colocamos en la llave `<sonar.login></sonar.login>`. Así podemos publicar los proyectos escaneados a sonar.
 
-Para este proyecto sonar fue ejecutado en un contenedor de Docker
+Para este proyecto, sonar fue ejecutado en un contenedor de Docker
 
 - Construcción de imágen Docker
 
@@ -185,7 +185,7 @@ stage('Build Docker Image') {
     }
 }
 ```
-En esta etapa se ejecuta la función `buildImage` dentro del archivo `ciUtils.groovy` con los respectivos parametros.
+En esta etapa se ejecuta la función `buildImage()` dentro del archivo `ciUtils.groovy` con los respectivos parametros.
 
 ``` ciUtils.groovy
 
