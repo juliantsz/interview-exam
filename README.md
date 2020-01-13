@@ -73,6 +73,7 @@ options {
     - Especificando la rama a clonar
     - Credenciales
     - Url del repositorio git
+- Con `readMavenPom` leemos el archivo `pom.xml` clonado en el repositorio. Esto se utilizará para la construcción de la imágen Docker
 ```
 stage('Clone Repo') {
     steps {
