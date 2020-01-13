@@ -16,7 +16,7 @@ Para tener un servidor de Jenkins en el cual trabajar opte por la opción de con
 ##### jenkins-shared-libraries
 Jenkins puede ser ejecutada de muchas maneras. Una de estas es con un `Jenkinsfile` sin embargo el problema es que este archivo es guardado en el repositorio donde se encuentra el código de los desarrolladores, corriendo el riesgo de ser modificado o eliminado por alguien distinto al DevOps del proyecto. Con [jenkins-shared-libraries](https://jenkins.io/doc/book/pipeline/shared-libraries/) se define un repositorio donde se versiona el código utilizado por el DevOps. De esta manera se tiene por un lado el código de los desarrolladores y el código del DevOps separado, evitando conflictos. Para su uso es necesario cierta configuración y estructura del repositorio.
 
-1. en las configuraciones de Jenkins buscamos la sección llamada `Global Pipeline Libraries` y agregamos el nombre de la librearia compartida, rama default que queremos usar (por lo general `master`), url del repositorio, credenciales y el tipo de repositorio. 
+1. En las configuraciones de Jenkins buscamos la sección llamada `Global Pipeline Libraries` y agregamos el nombre de la librearia compartida, rama default que queremos usar (por lo general `master`), url del repositorio, credenciales y el tipo de repositorio. 
 ![alt text](https://github.com/juliantsz/images/blob/master/shared-library.png)
 
 2. El repositorio debe seguir una estructura específica
@@ -194,13 +194,14 @@ Primero generamos un archivo [Dockerfile](https://github.com/juliantsz/jenkins-s
 
 - La dirección ip del servidor esta guardada como variable de entorno en Jenkins, de esta manera si dicha dirección cambia solo basta con cambiarla en un solo lugar sin modificar código.
 
-- `withCredentials` nos permite mapear el usuario y contraseña tomadas de las credenciales de Jenkins de manera segura
+- `withCredentials` nos permite mapear el usuario y contraseña para conectarnos al servidor, estas credenciales estan guardadas en Jenkins. Muy útil para evitar que escribir contraseñas en el código.
 
-- Una vez conectados al servidor procedemos primero a copiar el `Dockerfile`, `buildImage.sh`, `war generado` y `webapp-runner.jar` a la ruta `home/ec2-user/` dentro del servidor.
+- Una vez conectados al servidor procedemos primero a copiar el `Dockerfile`, `buildImage.sh`, `war generado` y `webapp-runner.jar` a la ruta `home/ec2-user/` dentro del servidor son el commando `sshPut`.
 
-- Copiado todo esto con `sshCommand` ejecutamos comandos dentro del servidor. Para simplicidad y no tener que ejecutar varios comandos, procedemos a ejecutar el shell. Este shell hará todo el trabajo por nosotros. Como construir la imágen, subir la imágen a [docker hub](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example) y eliminar la imágen del servidor. 
+- Una vez copiado todo esto, con `sshCommand` ejecutamos comandos dentro del servidor. Para simplicidad y no tener que ejecutar varios comandos, procedemos a ejecutar el shell. Este shell hará todo el trabajo por nosotros. Como construir la imágen, subir la imágen a [docker hub](https://hub.docker.com/repository/docker/crafterox4/java-tomcat-maven-example) y eliminar la imágen del servidor para mantenerlo limpio.
 
-- Por último, con otro `sshCommand` eliminamos todo lo copiado al servidor. De esta manera estará limpio para la siguiente ejecución.
+- Por último, con otro `sshCommand` eliminamos todo lo copiado al servidor. De esta manera, el servidor estará limpio para la siguiente ejecución.
+
 
 
 - Despliegue a un clúster de Kubernetes
